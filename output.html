@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+
+<head>
+<title>CW2 Output</title>
+<link rel=stylesheet type=text/css href=output.css />
+<!--Adjust for mobiles-->
+<meta name='viewport' content='width=device-width, initial-scale=1, maximum-scale=1'>
+</head>
+
+<body>
+<!--Import jquery and chart.js-->
+<script src=//code.jquery.com/jquery-3.2.1.min.js></script>
+<script src=https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.bundle.js></script>
+<!--Initialise text box and chart-->
+<input id=MOD_CODE value=SET08108><button id='go'>Go</button>
+<canvas id="myChart" width="400" height="400"></canvas>
+
+<!--Ajax call to set up chart and import data from query in output.php-->
+<script>
+$(function()
+{
+	$('#go').click(function()
+	{
+		$.ajax({url:'output.php',data:{MOD_CODE:$('#MOD_CODE').val()},dataType:'json',success:function(d)
+		{
+			var data = {labels:[],datasets:[{label:$('#MOD_CODE').val()+' results',data:[],}]};
+			for(var i=0;i<d.length;i++)
+			{
+				data.labels.push(d[i][0]);
+				data.datasets[0].data.push(parseFloat(d[i][1]));
+			}
+			console.log(data);
+			var ctx = document.getElementById("myChart");
+			var myChart = new Chart(ctx, 
+			{
+    				type: 'radar',
+				data:data,
+    				options:
+				{
+					responsive:false,
+					scale:{ticks:{beginAtZero: true}}
+				}
+			});
+		}});
+	});
+});
+</script>
+</body>
+</html>

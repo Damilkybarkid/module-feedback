@@ -8,7 +8,7 @@ if ($con ->connect_error)
 {
 	die('Connection failure');
 }
-# Delete all records before inserting new ones - possibly a bad decision TODO stop being bad
+# Delete all records before inserting new ones
 $sql = "delete from INS_RES where SPR_CODE=? AND AYR_CODE='2016/7' AND PSL_CODE='TR1'";
 $stmt = $con->prepare($sql)
 	or die($con->error);
